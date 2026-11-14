@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grade 9 Hub</title>
+  <meta name="description" content="اطلب من زملائك واستلم طلبك بالمدرسة">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="top">
+    <h1>Grade 9 Hub</h1>
+    <p>اطلب من زملائك، واستلم طلبك بالمدرسة</p>
+  </header>
+  <div id="demo-banner" class="banner" hidden>وضع تجريبي: البيانات وهمية ومحفوظة على جهازك فقط.</div>
+
+  <main>
+    <section id="my-requests" hidden>
+      <h2 class="section-title">طلباتي الخاصة</h2>
+      <div id="my-requests-list" class="list" aria-live="polite"></div>
+    </section>
+
+    <div class="tools">
+      <input id="search" type="search" placeholder="ابحث عن منتج..." aria-label="بحث">
+      <div id="chips" class="chips" role="group" aria-label="التصنيفات"></div>
+    </div>
+    <section id="grid" class="grid" aria-live="polite"></section>
+    <p id="empty" class="empty" hidden>ما في منتجات مطابقة هلأ.</p>
+    <div class="special">
+      <button id="open-request" class="btn ghost" type="button">ما لقيت اللي بدك؟ اطلب شي خاص</button>
+    </div>
+  </main>
+
+  <footer>
+    <button id="open-message" class="link" type="button">عندك اقتراح أو رسالة؟ ابعتها لقادة الصفوف</button>
+  </footer>
+
+  <dialog id="order-dialog">
+    <form id="order-form">
+      <h2 id="order-title">اطلب</h2>
+      <p class="hint">الدفع كاش عند الاستلام بالمدرسة. البائع بجهّز طلبك وبلاقيك هناك.</p>
+      <label>اسمك
+        <input name="name" required maxlength="40" autocomplete="name">
+      </label>
+      <label>شعبتك (مثال: A)
+        <input name="className" required maxlength="20">
+      </label>
+      <label>ملاحظة (اختياري)
+        <textarea name="note" rows="2" maxlength="200"></textarea>
+      </label>
+      <div class="actions">
+        <button class="btn" type="submit">أرسل الطلب</button>
+        <button class="btn ghost" type="button" data-close>إلغاء</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="request-dialog">
+    <form id="request-form">
+      <h2>طلب خاص</h2>
+      <p class="hint">اكتب شو بدك والبائعين بشوفوا طلبك. أول بائع بقبله بجهّزه، وبتتابع حالته من هون بالصفحة. الدفع كاش عند الاستلام.</p>
+      <label>شو بدك؟
+        <textarea name="body" rows="3" required minlength="3" maxlength="200" placeholder="مثال: دوريتوس حجم كبير"></textarea>
+      </label>
+      <label>أعلى سعر بتدفعه (اختياري)
+        <input name="maxPrice" type="number" min="0" step="0.05" inputmode="decimal">
+      </label>
+      <label>اسمك
+        <input name="name" required maxlength="40" autocomplete="name">
+      </label>
+      <label>شعبتك (مثال: A)
+        <input name="className" required maxlength="20">
+      </label>
+      <div class="actions">
+        <button class="btn" type="submit">أرسل الطلب</button>
+        <button class="btn ghost" type="button" data-close>إلغاء</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="message-dialog">
+    <form id="message-form">
+      <h2>رسالة لقادة الصفوف</h2>
+      <p class="hint">الرسالة بتوصل للقادة فقط. الاقتراح بوصّل صوتك، لكن ما في ضمان إن المدرسة بتنفذه. لا تكتب إساءة لأي شخص.</p>
+      <label>اسمك (اختياري)
+        <input name="name" maxlength="40">
+      </label>
+      <label>شعبتك (اختياري)
+        <input name="className" maxlength="20">
+      </label>
+      <label>رسالتك
+        <textarea name="body" rows="4" required minlength="3" maxlength="500"></textarea>
+      </label>
+      <div class="actions">
+        <button class="btn" type="submit">إرسال</button>
+        <button class="btn ghost" type="button" data-close>إلغاء</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" role="status"></div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
