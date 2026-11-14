@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>رسائل لنوّاب الشعب — Grade 9 Hub</title>
+  <link rel="icon" href="data:,">
+  <script>try{var t=localStorage.getItem("theme");if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t}catch(e){}</script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="site-header"></div>
+  <div id="demo-banner" class="banner" hidden>وضع تجريبي: الرسائل محفوظة على جهازك فقط.</div>
+
+  <main>
+    <div class="page-head">
+      <h1>💬 رسائل لنوّاب الشعب</h1>
+      <p>عندك اقتراح أو مشكلة؟ اكتبها هون، وبتوصل لنوّاب الشعب فقط.</p>
+    </div>
+
+    <section id="form-box">
+      <form id="message-form" class="stack">
+        <p class="hint">نوصّل صوتك، بس ما في ضمان إن المدرسة بتنفّذ الاقتراح. لا تكتب إساءة لأي شخص.</p>
+        <label>اسمك (اختياري)
+          <input name="name" maxlength="40" autocomplete="name">
+        </label>
+        <label>شعبتك (اختياري)
+          <input name="className" maxlength="20">
+        </label>
+        <label>رسالتك
+          <textarea name="body" rows="5" required minlength="3" maxlength="500"></textarea>
+        </label>
+        <button class="btn wide" type="submit">إرسال الرسالة</button>
+      </form>
+    </section>
+
+    <section id="done-box" class="done-box" hidden>
+      <div class="big">✅</div>
+      <h2>وصلت رسالتك!</h2>
+      <p>شكراً، النوّاب رح يشوفوها.</p>
+      <button id="again" class="btn ghost" type="button">اكتب رسالة ثانية</button>
+    </section>
+  </main>
+
+  <div id="toast" role="status"></div>
+  <script type="module" src="js/messages.js"></script>
+</body>
+</html>

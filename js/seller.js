@@ -1,4 +1,5 @@
-import { h, $, toast, formatDate, formatPrice, getToken } from './dom.js';
+import { h, $, toast, formatDate, formatPrice, getToken, parsePrice } from './dom.js';
+import { initShell } from './shell.js';
 import { PRODUCT_CATEGORIES } from './categories.js';
 import {
   isDemo, getSellerName, getSellerOrders, setOrderStatus,
@@ -54,16 +55,6 @@ const changeRequestStatus = async (requestId, status) => {
   } catch {
     toast('ما انحفظ التغيير، جرّب مرة ثانية.');
   }
-};
-
-// يقبل أرقام عربية وفاصلة عادية أو عربية: 0.35 / 0,35 / ٠٫٣٥
-const parsePrice = (raw) => {
-  const text = String(raw).trim()
-    .replace(/[٠-٩]/g, (d) => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))
-    .replace(/[,،٫٬/]/g, '.');
-  if (text === '') return null;
-  const value = Number(text);
-  return Number.isFinite(value) && value >= 0 ? value : NaN;
 };
 
 const takeRequest = async (requestId, priceInput) => {
@@ -205,6 +196,7 @@ const refresh = async () => {
 };
 
 const init = async () => {
+  initShell('seller');
   $('#demo-banner').hidden = !isDemo;
   let name = null;
   let connectionFailed = false;
@@ -223,7 +215,7 @@ const init = async () => {
     $('#seller-area').hidden = true;
     return;
   }
-  $('#title').textContent = `طلبات ${name}`;
+  $('#title').textContent = `📦 طلبات ${name}`;
 
   const productForm = $('#product-form');
   productForm.elements.category.replaceChildren(

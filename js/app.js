@@ -1,11 +1,12 @@
-import { h, $, toast, store, formatDate, formatPrice } from './dom.js';
+import { h, $, toast, store, formatDate, formatPrice, parsePrice } from './dom.js';
+import { initShell } from './shell.js';
 import {
-  isDemo, listProducts, createOrder, sendMessage,
+  isDemo, listProducts, createOrder,
   createSpecialRequest, getMyRequests, cancelMyRequest,
 } from './api.js';
 import { PRODUCT_CATEGORIES, CATEGORY_ICON } from './categories.js';
 
-const CATEGORIES = [['all', 'الكل'], ...PRODUCT_CATEGORIES];
+const CATEGORIES = [['all', 'الكل', '⭐'], ...PRODUCT_CATEGORIES.map(([id, label, icon]) => [id, label, CATEGORY_ICON[id]])];
 const SUBMIT_COOLDOWN_MS = 15000;
 
 const state = { products: [], category: 'all', query: '', selected: null };
@@ -38,19 +39,17 @@ const productCard = (product) =>
     h('div', { class: 'body' },
       h('h3', {}, product.name),
       product.description && h('p', { class: 'desc' }, product.description),
-      h('div', { class: 'meta' },
-        h('span', { class: 'price' }, formatPrice(product.price)),
-        h('span', { class: 'seller' }, `البائع: ${product.seller_name}`),
-      ),
-      h('div', { class: 'actions' },
-        h('button', { class: 'btn', type: 'button', onClick: () => openOrder(product) }, 'اطلب'),
-        product.seller_whatsapp && h('a', {
-          class: 'btn ghost',
-          href: whatsappLink(product),
-          target: '_blank',
-          rel: 'noopener',
-        }, 'واتساب'),
-      ),
+      h('span', { class: 'price' }, formatPrice(product.price)),
+      h('span', { class: 'seller' }, `البائع: ${product.seller_name}`),
+    ),
+    h('div', { class: 'actions' },
+      h('button', { class: 'btn', type: 'button', onClick: () => openOrder(product) }, 'اطلب 🛒'),
+      product.seller_whatsapp && h('a', {
+        class: 'btn ghost',
+        href: whatsappLink(product),
+        target: '_blank',
+        rel: 'noopener',
+      }, 'واتساب'),
     ),
   );
 
@@ -61,7 +60,7 @@ const renderGrid = () => {
 };
 
 const renderChips = () => {
-  $('#chips').replaceChildren(...CATEGORIES.map(([id, label]) =>
+  $('#chips').replaceChildren(...CATEGORIES.map(([id, label, icon]) =>
     h('button', {
       type: 'button',
       class: `chip${state.category === id ? ' on' : ''}`,
@@ -71,7 +70,7 @@ const renderChips = () => {
         renderChips();
         renderGrid();
       },
-    }, label)));
+    }, h('span', { 'aria-hidden': 'true' }, icon), label)));
 };
 
 // ---------- الطلب ----------
@@ -108,31 +107,6 @@ const submitOrder = async (event) => {
     markSubmitted('last_order');
     $('#order-dialog').close();
     toast('وصل طلبك! البائع بجهّزه وبلاقيك بالمدرسة.');
-  } catch {
-    toast('صار خطأ، جرّب مرة ثانية.');
-  }
-};
-
-// ---------- رسالة للقادة ----------
-
-const submitMessage = async (event) => {
-  event.preventDefault();
-  if (isCoolingDown('last_message')) return toast('استنى شوي قبل ما تبعت رسالة ثانية.');
-
-  const form = event.currentTarget;
-  const body = form.elements.body.value.trim();
-  if (body.length < 3) return toast('اكتب رسالة أطول شوي.');
-
-  try {
-    await sendMessage({
-      senderName: form.elements.name.value.trim(),
-      senderClass: form.elements.className.value.trim(),
-      body,
-    });
-    markSubmitted('last_message');
-    form.reset();
-    $('#message-dialog').close();
-    toast('وصلت رسالتك للقادة.');
   } catch {
     toast('صار خطأ، جرّب مرة ثانية.');
   }
@@ -214,13 +188,14 @@ const submitRequest = async (event) => {
   const buyerClass = form.elements.className.value.trim();
   if (body.length < 3 || !buyerName || !buyerClass) return toast('عبّي الحقول المطلوبة.');
 
-  const maxRaw = form.elements.maxPrice.value;
+  const maxPrice = parsePrice(form.elements.maxPrice.value);
+  if (Number.isNaN(maxPrice)) return toast('اكتب السعر أرقام فقط، مثل 0.50');
   try {
     const token = await createSpecialRequest({
       buyerName,
       buyerClass,
       body,
-      maxPrice: maxRaw === '' ? null : Number(maxRaw),
+      maxPrice,
     });
     saveToken(token);
     store.set('buyer_name', buyerName);
@@ -243,6 +218,7 @@ const closeDialogs = () => {
 };
 
 const init = async () => {
+  initShell('market');
   $('#demo-banner').hidden = !isDemo;
   renderChips();
   closeDialogs();
@@ -252,8 +228,6 @@ const init = async () => {
     renderGrid();
   });
   $('#order-form').addEventListener('submit', submitOrder);
-  $('#message-form').addEventListener('submit', submitMessage);
-  $('#open-message').addEventListener('click', () => $('#message-dialog').showModal());
   $('#request-form').addEventListener('submit', submitRequest);
   $('#open-request').addEventListener('click', openRequest);
 

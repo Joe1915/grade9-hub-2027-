@@ -1,4 +1,5 @@
 import { h, $, toast, formatDate, getToken } from './dom.js';
+import { initShell } from './shell.js';
 import { isDemo, getLeaderName, getLeaderMessages } from './api.js';
 
 const REFRESH_MS = 60000;
@@ -26,6 +27,7 @@ const refresh = async () => {
 };
 
 const init = async () => {
+  initShell('leader');
   $('#demo-banner').hidden = !isDemo;
   let name = null;
   let connectionFailed = false;
@@ -43,7 +45,7 @@ const init = async () => {
     $('#invalid').hidden = false;
     return;
   }
-  $('#title').textContent = `رسائل الطلاب — ${name}`;
+  $('#title').textContent = `📬 رسائل الطلاب — ${name}`;
   await refresh().catch(() => toast('ما قدرنا نحمّل الرسائل.'));
   setInterval(() => refresh().catch(() => {}), REFRESH_MS);
 };

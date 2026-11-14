@@ -3,60 +3,64 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
   <meta name="robots" content="noindex">
   <title>طلباتي — Grade 9 Hub</title>
   <link rel="icon" href="data:,">
+  <script>try{var t=localStorage.getItem("theme");if(!t)t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t}catch(e){}</script>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header class="top">
-    <h1 id="title">طلباتي</h1>
-    <p>الطلبات الجديدة بتظهر هون. حدّث الحالة لما تجهّز الطلب.</p>
-  </header>
-  <div id="demo-banner" class="banner" hidden>وضع تجريبي: استعمل الرابط seller.html?t=demo</div>
+  <div id="site-header"></div>
+  <div id="demo-banner" class="banner" hidden>وضع تجريبي: استعمل الرابط seller.html#t=demo</div>
   <main>
+    <div class="page-head">
+      <h1 id="title">📦 طلباتي</h1>
+      <p>الطلبات الجديدة بتظهر هون. حدّث الحالة لما تجهّز الطلب.</p>
+    </div>
     <p id="invalid" class="empty" hidden>الرابط غير صحيح. اطلب الرابط الصحيح من صاحب الموقع.</p>
+
     <div id="seller-area">
-    <h2 class="section-title">طلبات خاصة</h2>
-    <section id="requests" class="list" aria-live="polite"></section>
-    <p id="requests-empty" class="empty" hidden>ما في طلبات خاصة هلأ.</p>
+      <h2 class="section-title">🛍️ الطلبات الجديدة</h2>
+      <section id="list" class="list" aria-live="polite"></section>
+      <p id="empty" class="empty" hidden>ما في طلبات بعد.</p>
 
-    <h2 class="section-title">الطلبات العادية</h2>
-    <section id="list" class="list" aria-live="polite"></section>
-    <p id="empty" class="empty" hidden>ما في طلبات بعد.</p>
+      <h2 class="section-title">⭐ طلبات خاصة</h2>
+      <section id="requests" class="list" aria-live="polite"></section>
+      <p id="requests-empty" class="empty" hidden>ما في طلبات خاصة هلأ.</p>
 
-    <h2 class="section-title">إعلاناتي</h2>
-    <details class="panel">
-      <summary>انشر إعلان جديد</summary>
-      <form id="product-form" class="stack">
-        <label>اسم المنتج (مثال: دوريتوس كبير)
-          <input name="name" required maxlength="60">
-        </label>
-        <label>السعر بالدينار (مثال: 0.35 يعني 35 قرش)
-          <input name="price" type="text" required inputmode="decimal" autocomplete="off" placeholder="0.35">
-        </label>
-        <label>التصنيف
-          <select name="category"></select>
-        </label>
-        <label>وصف قصير (اختياري)
-          <input name="description" maxlength="200">
-        </label>
-        <button class="btn" type="submit">انشر الإعلان</button>
-      </form>
-    </details>
-    <section id="my-products" class="list" aria-live="polite"></section>
-    <p id="my-products-empty" class="empty" hidden>ما نشرت إعلانات بعد.</p>
+      <h2 class="section-title">🏷️ إعلاناتي</h2>
+      <details class="panel">
+        <summary>➕ انشر إعلان جديد</summary>
+        <form id="product-form" class="stack">
+          <label>اسم المنتج (مثال: دوريتوس كبير)
+            <input name="name" required maxlength="60">
+          </label>
+          <label>السعر بالدينار (مثال: 0.35 يعني 35 قرش)
+            <input name="price" type="text" required inputmode="decimal" autocomplete="off" placeholder="0.35">
+          </label>
+          <label>التصنيف
+            <select name="category"></select>
+          </label>
+          <label>وصف قصير (اختياري)
+            <input name="description" maxlength="200">
+          </label>
+          <button class="btn" type="submit">انشر الإعلان</button>
+        </form>
+      </details>
+      <section id="my-products" class="list" aria-live="polite"></section>
+      <p id="my-products-empty" class="empty" hidden>ما نشرت إعلانات بعد.</p>
 
-    <details class="panel">
-      <summary>رقم واتساب (اختياري)</summary>
-      <form id="whatsapp-form" class="stack">
-        <p class="hint">لو حطيت رقمك، بيظهر لكل الطلاب زر "واتساب" على إعلاناتك. اتركه فاضي إذا ما بدك. لا تحط رقمك إلا إذا أهلك موافقين.</p>
-        <label>رقم واتساب
-          <input name="number" type="tel" inputmode="tel" maxlength="20" placeholder="0791234567">
-        </label>
-        <button class="btn" type="submit">حفظ</button>
-      </form>
-    </details>
+      <details class="panel">
+        <summary>📱 رقم واتساب (اختياري)</summary>
+        <form id="whatsapp-form" class="stack">
+          <p class="hint">لو حطيت رقمك، بيظهر لكل الطلاب زر "واتساب" على إعلاناتك. اتركه فاضي إذا ما بدك. لا تحط رقمك إلا إذا أهلك موافقين.</p>
+          <label>رقم واتساب
+            <input name="number" type="tel" inputmode="tel" maxlength="20" placeholder="0791234567">
+          </label>
+          <button class="btn" type="submit">حفظ</button>
+        </form>
+      </details>
     </div>
   </main>
   <div id="toast" role="status"></div>

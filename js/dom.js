@@ -60,3 +60,14 @@ export const getToken = (key) => {
     return found || '';
   }
 };
+
+// يقبل أرقام عربية وفاصلة عادية أو عربية: 0.35 / 0,35 / ٠٫٣٥
+// يرجّع null إذا فاضي، NaN إذا مش رقم، وإلا الرقم.
+export const parsePrice = (raw) => {
+  const text = String(raw).trim()
+    .replace(/[٠-٩]/g, (digit) => '٠١٢٣٤٥٦٧٨٩'.indexOf(digit))
+    .replace(/[,،٫٬/]/g, '.');
+  if (text === '') return null;
+  const value = Number(text);
+  return Number.isFinite(value) && value >= 0 ? value : NaN;
+};
