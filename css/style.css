@@ -453,3 +453,10 @@ dialog .actions .btn { flex: 1; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
+
+.hint.warn {
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+  border: 2px solid var(--warn-ink);
+  font-weight: 600;
+}
